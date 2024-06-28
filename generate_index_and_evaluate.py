@@ -1,5 +1,7 @@
 # generate_index_and_evaluate.py
 
+# Remember to change the model name and save file name before running this code!
+
 # RAGatouille creates an index using a pretrained model and then runs
 # queries on that index (which has the model built-in). This script generates
 # those indices for any pretrained model. It also adds document IDs to the 
@@ -25,13 +27,30 @@ qa_data = datasets.load_dataset("retrieval-bar/mbe", name="qa", split=datasets.S
 qa_data = qa_data.filter(lambda entry : entry["gold_idx"] != "nan") # blanks are listed as "nan"
 # Concatenate prompt (when applicable) and question to get a list of queries
 queries = [(x[0] + " " + x[1]) if x[0] != "nan" else x[1] for x in zip(qa_data["prompt"], qa_data["question"])] # they were showing up as "nan Question..."; this fixed that
-gold_passages = qa_data["gold_idx"] # list of gold passage IDs (aligned with document IDs of index)
+gold_passage_ids = qa_data["gold_idx"] 
 
-# This method calculates evaluation metrics @ K and adds them to the 
-def metrics(k, results, gold_passage_id, add_mrr=False):
-    pass 
+# This method calculates evaluation metrics @ K and adds them to a text file.
+def metrics(k, filename):
+    retrieval_results = model.search(queries, k = k)
+    retrieved_gold_passages = 0 # count of queries that retrieved the gold passage
+    mrr_total = 0 # sum of MRR values (for mean MRR calculation)
 
-metrics(1, ?, ?)
-metrics(10, ?, ?, True) # also calculating MRR @ 10
-metrics(100, ?, ?)
-metrics(1000, ?, ?)
+    for i, results in enumerate(retrieval_results):
+        for j, result in enumerate(results):
+            if result["document_id"] == gold_passage_ids[i]: # gold_idx[i] and query[i] (-> result[i]) should be the same example
+                retrieved_gold_passages += 1
+                mrr_total += 1 / (j + 1) # 1 / (0 + 1) for first result and so on
+                break # break as soon as gold passage is found for efficiency
+    
+    with open(filename, 'a') as f:
+        f.write("Results at K = " + str(k) + "\n")
+        f.write(" - Recall (average, %): " + str(100 * retrieved_gold_passages / len(retrieval_results)) + "\n")
+        f.write(" - MRR (average, %): " + str(100 * mrr_total / len(retrieval_results)) + "\n")
+        f.write("\n")
+
+# Running model and calculating metrics
+save_file = "evaluation_basecolbert.txt"
+metrics(1, save_file)
+metrics(10, save_file, True) # we also want to return MRR here
+metrics(100, save_file)
+metrics(1000, save_file)
