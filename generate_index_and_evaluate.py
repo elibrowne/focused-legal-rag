@@ -16,7 +16,7 @@ model = RAGPretrainedModel.from_pretrained(model_name)
 passage_data = datasets.load_dataset("retrieval-bar/mbe", name="passages", split=datasets.Split.TEST, trust_remote_code=True)
 passages, passage_ids = passage_data["text"], passage_data["idx"]
 # The index is stored locally: it's named based on the model it used; it uses passage IDs as document IDs. 
-index_path = model.index(index_name="index_"+model_name, collection=passages, document_ids=passage_ids, bsize=16, max_document_length=512) # document length maximized for BERT
+index_path = model.index(index_name="index_"+model_name, collection=passages, document_ids=passage_ids, bsize=4, max_document_length=512) # document length maximized for BERT
 
 # From here, we want to evaluate our results based on our query/gold passage pairs.
 # We can do this iteratively. Metrics in the "Legal Retrievers May..." paper for evaluating
