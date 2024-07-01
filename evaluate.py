@@ -8,7 +8,7 @@ from ragatouille import RAGPretrainedModel
 if __name__ == "__main__":
     # Load model for retrieval — an existing model name should be stored on disk.
 
-    index_name = ".ragatouille/colbert/indexes/index_colbertv2.0base_gpu" # substitute with model being employed!
+    index_name = ".ragatouille/colbert/indexes/index_colbertv2.0base_VALIDATION" # substitute with model being employed!
     model = RAGPretrainedModel.from_index(index_name)
 
     # Gather queries for evaluating retrieval. These can be passed to a model as an ordered list.

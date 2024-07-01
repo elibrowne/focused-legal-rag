@@ -1,0 +1,16 @@
+Results at K = 1
+ - Recall (average, %): 1.4134275618374559
+ - MRR (average, %): 1.4134275618374559
+
+Results at K = 10
+ - Recall (average, %): 4.240282685512367
+ - MRR (average, %): 2.1411744909978125
+
+Results at K = 100
+ - Recall (average, %): 9.187279151943462
+ - MRR (average, %): 2.3139062342317342
+
+Results at K = 1000
+ - Recall (average, %): 21.20141342756184
+ - MRR (average, %): 2.3534491294625384
+

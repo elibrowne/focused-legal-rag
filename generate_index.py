@@ -19,4 +19,4 @@ if __name__ == "__main__":
     passage_data = datasets.load_dataset("retrieval-bar/mbe", name="passages", split=datasets.Split.VALIDATION, trust_remote_code=True)
     passages, passage_ids = passage_data["text"], passage_data["idx"]
     # The index is stored locally: it's named based on the model it used; it uses passage IDs as document IDs. 
-    index_path = model.index(index_name="index_colbertv2.0base_gpu", collection=passages, document_ids=passage_ids, bsize=8, max_document_length=512) # document length maximized for BERT
+    index_path = model.index(index_name="index_colbertv2.0base_VALIDATION", collection=passages, document_ids=passage_ids, bsize=8, max_document_length=512) # document length maximized for BERT
