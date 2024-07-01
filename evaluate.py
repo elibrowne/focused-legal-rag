@@ -8,8 +8,8 @@ from ragatouille import RAGPretrainedModel
 if __name__ == "__main__":
     # Load model for retrieval — an existing model name should be stored on disk.
 
-    model_name = "colbert-ir/colbertv2.0" # substitute with model being employed!
-    model = RAGPretrainedModel.from_pretrained(model_name)
+    index_name = ".ragatouille/colbert/indexes/index_colbertv2.0base_gpu" # substitute with model being employed!
+    model = RAGPretrainedModel.from_index(index_name)
 
     # Gather queries for evaluating retrieval. These can be passed to a model as an ordered list.
 
@@ -19,6 +19,7 @@ if __name__ == "__main__":
     # Concatenate prompt (when applicable) and question to get a list of queries
     queries = [(x[0] + " " + x[1]) if x[0] != "nan" else x[1] for x in zip(qa_data["prompt"], qa_data["question"])] # they were showing up as "nan Question..."; this fixed that
     gold_passage_ids = qa_data["gold_idx"] 
+    print("Queries to search: " + str(len(queries)))
 
     # From here, we want to evaluate our results based on our query/gold passage pairs.
     # We can do this iteratively. Metrics in the "Legal Retrievers May..." paper for evaluating
