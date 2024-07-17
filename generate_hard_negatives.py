@@ -1,9 +1,5 @@
-# test_hard_negatives.py 
-# I didn't see any explicit code in RAGatouille that prevented a gold passage from being selected as a hard negative:
-# does this actually happen in practice? 
-
-from ragatouille import RAGTrainer
-import datasets
+import datasets 
+from ragatouille.negative_miners import SimpleMiner
 
 if __name__ == "__main__":
     # Collect pairs of (query, gold passage) tuples for training data
@@ -17,12 +13,5 @@ if __name__ == "__main__":
     zipped = zip(queries, gold_passages)
     data = list(zipped)
 
-    # Load passage data (needed for mining hard negatives)
-    passage_data = datasets.load_dataset("retrieval-bar/mbe", name="passages", split=datasets.Split.VALIDATION, trust_remote_code=True)
-    passages = passage_data["text"]
-
-    # Set up RAGTrainer with model that we're looking to fine-tune
-    trainer = RAGTrainer(model_name = "ColBERT_ft", pretrained_model_name = "colbert-ir/colbertv2.0")
-    trainer.prepare_training_data(raw_data=data, all_documents=passages, data_out_path="./data/") # this should automatically mine hard negatives
-
-    
+    miner = SimpleMiner(language_code = "en", model_size = "base")
+    miner.build_index(save_index = True, save_path = "hard_negs")
