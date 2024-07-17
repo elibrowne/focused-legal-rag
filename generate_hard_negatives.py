@@ -1,5 +1,5 @@
 import datasets 
-from ragatouille.negative_miners import SimpleMiner
+from ragatouille import RAGTrainer
 
 if __name__ == "__main__":
     # Collect pairs of (query, gold passage) tuples for training data
@@ -12,6 +12,10 @@ if __name__ == "__main__":
     # gold_passage_ids = qa_data["gold_idx"] — likely unneeded for fine-tuning; only relevant in evaluation 
     zipped = zip(queries, gold_passages)
     data = list(zipped)
+
+    # Load passage data (needed for mining hard negatives)
+    passage_data = datasets.load_dataset("retrieval-bar/mbe", name="passages", split=datasets.Split.VALIDATION, trust_remote_code=True)
+    passages = passage_data["text"]
 
     trainer = RAGTrainer(model_name = "colbert", pretrained_model_name = "colbert-ir/colbertv2.0") # this doesn't matter
     trainer.prepare_training_data(raw_data=data, all_documents=passages, data_out_path="./data/") # this should automatically mine hard negatives and save them if the custom install is working 
