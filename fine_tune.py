@@ -21,7 +21,7 @@ if __name__ == "__main__":
     passages = passage_data["text"]
 
     # Set up RAGTrainer with model that we're looking to fine-tune
-    trainer = RAGTrainer(model_name = "ftLegalBERT", pretrained_model_name = "casehold/custom-legalbert")
+    trainer = RAGTrainer(model_name = "5e5lr_ftLegalBERT", pretrained_model_name = "casehold/custom-legalbert")
     # trainer.prepare_training_data(raw_data=data, all_documents=passages, data_out_path="./data/") # this should automatically mine hard negatives
 
-    trainer.train(batch_size = 32) # default batch size = 32
+    trainer.train(batch_size = 32, learning_rate = 5e-5) # default batch size = 32

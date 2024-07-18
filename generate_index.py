@@ -13,10 +13,10 @@ import faiss
 
 # RAGatouille requires scripts to be run from main.
 if __name__ == "__main__":
-    model_name = ".ragatouille/colbert/none/2024-07/18/14.28.19/checkpoints/colbert" # substitute with model being employed!
+    model_name = ".ragatouille/colbert/none/2024-07/18/16.06.32/checkpoints/colbert" # substitute with model being employed!
     model = RAGPretrainedModel.from_pretrained(model_name)
 
     passage_data = datasets.load_dataset("retrieval-bar/mbe", name="passages", split=datasets.Split.VALIDATION, trust_remote_code=True)
     passages, passage_ids = passage_data["text"], passage_data["idx"]
     # The index is stored locally: it's named based on the model it used; it uses passage IDs as document IDs. 
-    index_path = model.index(index_name="ftLegalBERT_index", collection=passages, document_ids=passage_ids, bsize=8, max_document_length=512) # document length maximized for BERT
+    index_path = model.index(index_name="5e5_ftLegalBERT_index", collection=passages, document_ids=passage_ids, bsize=8, max_document_length=512) # document length maximized for BERT

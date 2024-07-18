@@ -8,7 +8,7 @@ from ragatouille import RAGPretrainedModel
 if __name__ == "__main__":
     # Load model for retrieval — an existing model name should be stored on disk.
     
-    index_name = ".ragatouille/colbert/indexes/ftLegalBERT_index/"  # substitute with model being employed!
+    index_name = ".ragatouille/colbert/indexes/5e5_ftLegalBERT_index/"  # substitute with model being employed!
     model = RAGPretrainedModel.from_index(index_name)
 
     # Gather queries for evaluating retrieval. These can be passed to a model as an ordered list.
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # BarQA included Recall@1, Recall@10, MRR@10, Recall@100, and Recall@1000.
 
     k = 1000 
-    save_file = "ftLegalBERT_eval.txt" # change this when testing different models
+    save_file = "5e5_ftLegalBERT_eval.txt" # change this when testing different models
     retrieval_results = model.search(queries, k = k) 
     retrieved_1, retrieved_10, retrieved_100, retrieved_1000 = 0, 0, 0, 0 # count of queries that retrieved the gold passage @ k = 1, 10...
     mrr_total_10 = 0 # sum of MRR values @ k = 10 (for mean MRR calculation)
